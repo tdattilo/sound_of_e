@@ -4,7 +4,28 @@ from scipy import signal
 
 
 AUDIO_RATE = 44100
-freq = 440
+
+def get_frequency(e_value):
+    if e_value == 0:
+        return 329.628
+    elif e_value == 1:
+        return 369.994
+    elif e_value == 2:
+        return 391.995
+    elif e_value == 3:
+        return 440
+    elif e_value == 4:
+        return 493.883
+    elif e_value == 5:
+        return 523.251
+    elif e_value == 6:
+        return 587.33
+    elif e_value == 7:
+        return 622.254
+    elif e_value == 8:
+        return 659.255
+    elif e_value == 9:
+        return 739.989
 
 with open('e.txt', 'r') as e:
     e_value = -1
@@ -26,8 +47,8 @@ with open('e.txt', 'r') as e:
                     phi_value = int(phi.read(1))
                 except:
                     continue
-            t = np.linspace(start, start + (float(phi_value)/10.0), (float(phi_value)/10.0)* AUDIO_RATE, dtype=np.float32)
-            tmp = np.sin((2 + e_value/8) * np.pi * freq * t)
+            t = np.linspace(start, start + phi_value, phi_value * AUDIO_RATE, dtype=np.float32)
+            tmp = np.sin(2 * np.pi * get_frequency(e_value) * t)
             audio_data.resize(len(audio_data) + len(tmp))
             audio_data[-len(tmp):] = tmp
             start += (float(phi_value)/10.0)
